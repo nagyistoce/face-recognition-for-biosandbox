@@ -14,6 +14,7 @@
 #include <tchar.h>
 #include <iostream>
 #include <deque>
+#include <vector>
 
 
 
