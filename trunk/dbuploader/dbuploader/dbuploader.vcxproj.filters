@@ -39,12 +39,12 @@
     <ClInclude Include="TrainDbXml.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SplitString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dbuploader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="libs\pugixml-1.2\src\pugixml.cpp">
@@ -60,6 +60,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TrainDbXml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SplitString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

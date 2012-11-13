@@ -21,13 +21,9 @@ class DbUploaderXml : public XmlParsing
 {
 private:
 	string trainFile;
-	deque<Person> persones;
 public:
-	DbUploaderXml(string fileName);
-
-
+	DbUploaderXml(string fileName, deque<Person>& persones);
 	string GetTrainFile();
-	deque<Person> GetPersons();
 };
 
 #endif

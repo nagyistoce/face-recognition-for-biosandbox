@@ -5,7 +5,7 @@
 using namespace std;
 using namespace pugi;
 
-DbUploaderXml::DbUploaderXml(string fileName) : XmlParsing(fileName)
+DbUploaderXml::DbUploaderXml(string fileName, deque<Person>& persones) : XmlParsing(fileName)
 {
 	// ziskanie nazvu suboru s train databazou
 	this->trainFile = this->xmlDocument.child("dbuploader").child("Configuration").child("Input").child("Train").attribute("file").value();
@@ -28,8 +28,10 @@ DbUploaderXml::DbUploaderXml(string fileName) : XmlParsing(fileName)
 			this->ErrorMsg("[DbUploaderXml::DbUploaderXml(string fileName)]: Error while parsing dbuploader.xml");
 		}
 
+
+
 		Person *p = new Person(wname, id);
-		this->persones.push_back(*p);
+		persones.push_back(*p);
 		delete p;
 
 		//std::wcout << "Name: " << wname << endl;
@@ -46,9 +48,4 @@ DbUploaderXml::DbUploaderXml(string fileName) : XmlParsing(fileName)
 string DbUploaderXml::GetTrainFile()
 {
 	return this->trainFile;
-}
-
-deque<Person> DbUploaderXml::GetPersons()
-{
-	return this->persones;
 }

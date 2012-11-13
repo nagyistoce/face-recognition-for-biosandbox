@@ -20,7 +20,7 @@ class TrainDbXml : public XmlParsing
 private:
 
 public:
-	TrainDbXml(string fileName, deque<Person> persones);
+	TrainDbXml(string fileName, deque<Person>& persones);
 };
 
 #endif
