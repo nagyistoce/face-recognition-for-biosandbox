@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:hellowsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:hellowsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:hellowsdl">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="helloRequest">
+    <wsdl:part name="name" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="helloResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="hellowsdlPortType">
+    <wsdl:operation name="hello">
+      <documentation>Says hello to the caller</documentation>
+      <wsdl:input message="tns:helloRequest" />
+      <wsdl:output message="tns:helloResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="hellowsdlBinding" type="tns:hellowsdlPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="hello">
+      <soap:operation soapAction="urn:hellowsdl#hello" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:hellowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:hellowsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="hellowsdl">
+    <wsdl:port name="hellowsdlPort" binding="tns:hellowsdlBinding">
+      <soap:address location="http://147.175.106.113/websluzba1/server.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

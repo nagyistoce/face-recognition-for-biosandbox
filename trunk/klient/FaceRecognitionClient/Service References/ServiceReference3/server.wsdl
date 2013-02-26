@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:recognitionwsdl" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:recognitionwsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="urn:recognitionwsdl">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="uploadAndTestRequest">
+    <wsdl:part name="xmlfile" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="uploadAndTestResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="udfRecognitionTestRequest">
+    <wsdl:part name="xmlfile" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="udfRecognitionTestResponse">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:portType name="recognitionwsdlPortType">
+    <wsdl:operation name="uploadAndTest">
+      <documentation>Upload new person and train vectors</documentation>
+      <wsdl:input message="tns:uploadAndTestRequest" />
+      <wsdl:output message="tns:uploadAndTestResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="udfRecognitionTest">
+      <documentation>Test for peson with udf</documentation>
+      <wsdl:input message="tns:udfRecognitionTestRequest" />
+      <wsdl:output message="tns:udfRecognitionTestResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="recognitionwsdlBinding" type="tns:recognitionwsdlPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <wsdl:operation name="uploadAndTest">
+      <soap:operation soapAction="urn:recognitionwsdl#connectAndTest" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="udfRecognitionTest">
+      <soap:operation soapAction="urn:recognitionwsdl#udfRecognitionTest" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="recognitionwsdl">
+    <wsdl:port name="recognitionwsdlPort" binding="tns:recognitionwsdlBinding">
+      <soap:address location="http://147.175.106.113/WebServiceRecognition/server.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
