@@ -12,6 +12,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Xml;
+using System.ComponentModel;
+using FaceRecognitionClient.Threading;
+using System.Threading;
 
 namespace FaceRecognitionClient
 {
@@ -23,101 +26,74 @@ namespace FaceRecognitionClient
         public MainWindow()
         {
             InitializeComponent();
+
         }
 
-        // skuska
-        private void button3_Click(object sender, RoutedEventArgs e)
+        private void StartAsyncOperation()
         {
-            ServiceReference1.hellowsdlPortTypeClient client = new ServiceReference1.hellowsdlPortTypeClient();
-            string response = client.hello("Tomas");
+            button1.IsEnabled = false;
+            button2.IsEnabled = false;
+            radioButton1.IsEnabled = false;
+            radioButton2.IsEnabled = false;
 
-            this.textBox1.Text = response;
+            progressBar1.IsIndeterminate = true;
+        }
+
+        private void EndAsyncOperation()
+        {
+            button1.IsEnabled = true;
+            button2.IsEnabled = true;
+            radioButton1.IsEnabled = true;
+            radioButton2.IsEnabled = true;
+
+            progressBar1.IsIndeterminate = false;
         }
 
         // upload osob TODO refaktorizacia
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            // nacitanie osob
-            XmlDocument xmlPersones = new XmlDocument(); //* create an xml document object.
-            xmlPersones.Load(@"C:\Users\Tomas\Desktop\Timovy projekt\Release32\Release32\persones.xml"); //* load the XML document from the specified file.
-
-            // nacitanie vektorov
-            XmlDocument xmlVectors = new XmlDocument();
-            xmlVectors.Load(@"C:\Users\Tomas\Desktop\Timovy projekt\Release32\Release32\db.xml"); 
-
-            // nove xml pre request
-            XmlDocument request = new XmlDocument();
-            XmlNode requestRoot = request.AppendChild(request.CreateElement("Upload"));
-
-
-            //  sparsovanie a vytvorenie noveho xml s menami a vektormi
-            XmlNodeList persones = xmlPersones.GetElementsByTagName("Person");
-            foreach (XmlNode person in persones)
-            {
-                XmlNode requestPerson = requestRoot.AppendChild(request.CreateElement("Person"));
-
-                // pridanie elementu datas
-                XmlNode requestDatas = requestPerson.AppendChild(request.CreateElement("Datas"));
-                XmlAttribute requestDatasSize = requestDatas.Attributes.Append(request.CreateAttribute("size"));
-                requestDatasSize.InnerText = (person.ChildNodes.Count - 1).ToString();    // 1 je meno a zvysne su vektory
-
-                foreach (XmlNode child in person.ChildNodes)
-                {
-                    if (child.Name == "Name")
-                    {
-                        string personName = child.Attributes["value"].Value;
-
-                        // pridanie noveho mena
-                        XmlNode requestName = requestPerson.AppendChild(request.CreateElement("Name"));
-                        XmlAttribute requestNameValue = requestName.Attributes.Append(request.CreateAttribute("value"));
-                        requestNameValue.InnerText = personName;
-                    }
-                    if (child.Name == "opencv-matrix")
-                    {
-                        string opnecvId = child.Attributes["id"].Value;
-
-                        XmlNode vector = xmlVectors.GetElementsByTagName(opnecvId).Item(0);
-                        string personVector = vector.LastChild.InnerText;
-
-                        // pridanie vektoru
-                        // vyhodit ine znaky, a nechat len medzery
-                        XmlNode requestData = requestDatas.AppendChild(request.CreateElement("Data"));
-                        requestData.InnerText = personVector;
-                    }
-                }
-
-            }
-            string requestString = request.OuterXml;
-            textBox1.Text = requestString;
-
-            ServiceReference2.uploadwsdlPortTypeClient client = new ServiceReference2.uploadwsdlPortTypeClient();
-            string response = client.uploadAndTest("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
-
-            textBox1.Text = response;
+            StartAsyncOperation();
+            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted);
+            bc.AsyncUploadPersons();
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            StartAsyncOperation();
+            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted);
+
             // s UDF
             if ((bool)radioButton1.IsChecked)
             {
-                XmlDocument xmlPersones = new XmlDocument(); //* create an xml document object.
-                xmlPersones.Load(@"C:\Users\Tomas\Desktop\Timovy projekt\Release32\Release32\test.xml"); //* load the XML document from the specified file.
-
-                //textBox1.Text = xmlPersones.OuterXml;
-
-                try
-                {
-                    ServiceReference3.recognitionwsdlPortTypeClient client = new ServiceReference3.recognitionwsdlPortTypeClient();
-                    string response = client.udfRecognitionTest(xmlPersones.OuterXml);
-
-                    textBox1.Text = response;
-                }
-                catch (Exception ex)
-                {
-                    textBox1.Text = ex.Message;
-                }
+                bc.AsyncComparePersonsWithUDF();
             }
         }
+
+        private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // First, handle the case where an exception was thrown. 
+            if (e.Error != null)
+            {
+                textBox1.Text = e.Error.Message;
+            }
+            else if (e.Cancelled) // sem by nikdy nemal vbehnut
+            {
+                // Next, handle the case where the user canceled  
+                // the operation. 
+                // Note that due to a race condition in  
+                // the DoWork event handler, the Cancelled 
+                // flag may not have been set, even though 
+                // CancelAsync was called.
+                textBox1.Text = "Canceled";
+            }
+            else
+            {
+                // Finally, handle the case where the operation  
+                // succeeded.
+                textBox1.Text = e.Result.ToString();
+            }
+            EndAsyncOperation();
+        }
+
     }
 }
