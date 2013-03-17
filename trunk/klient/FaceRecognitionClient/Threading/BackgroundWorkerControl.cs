@@ -14,8 +14,14 @@ namespace FaceRecognitionClient.Threading
         private BackgroundWorker _worker;
         private DBackgroundWorkerCallback _callback;
 
-        public BackgroundWorkerControl(DBackgroundWorkerCallback callback)
+        private string _biosandboxHome; // Enviroment variable BIOSANDBOX_HOME
+        private string _filePersones;   // persones.xml - nas format pre mena osob a ich trenovacich vektorov
+        private string _fileDb;         // db.xml - biosandbox
+        private string _fileTest;       // test.xml - nas format pre testovaci vektor
+
+        public BackgroundWorkerControl(DBackgroundWorkerCallback callback, string biosandboxHome)
         {
+            _biosandboxHome = biosandboxHome;
             _worker = new BackgroundWorker();
             _callback = callback;
 
@@ -28,11 +34,11 @@ namespace FaceRecognitionClient.Threading
         {
             // nacitanie osob
             XmlDocument xmlPersones = new XmlDocument(); //* create an xml document object.
-            xmlPersones.Load(@"C:\Users\Tomas\Desktop\Timovy projekt\Release32\Release32\persones.xml"); //* load the XML document from the specified file.
+            xmlPersones.Load(string.Format("{0}/{1}", _biosandboxHome, _filePersones)); //* load the XML document from the specified file.
 
             // nacitanie vektorov
             XmlDocument xmlVectors = new XmlDocument();
-            xmlVectors.Load(@"C:\Users\Tomas\Desktop\Timovy projekt\Release32\Release32\db.xml");
+            xmlVectors.Load(string.Format("{0}/{1}", _biosandboxHome, _fileDb));
 
             // nove xml pre request
             XmlDocument request = new XmlDocument();
@@ -94,17 +100,18 @@ namespace FaceRecognitionClient.Threading
             e.Result = UploadPersons();
         }
 
-        public void AsyncUploadPersons()
+        public void AsyncUploadPersons(string filePersones, string fileDb)
         {
+            _filePersones = filePersones;
+            _fileDb = fileDb;
             _worker.DoWork += new DoWorkEventHandler(UploadPersonsDoWork);
-            
             _worker.RunWorkerAsync();
         }
 
         private string ComparePersonsWithUDF()
         {
             XmlDocument xmlPersones = new XmlDocument(); //* create an xml document object.
-            xmlPersones.Load(@"C:\Users\Tomas\Desktop\Timovy projekt\Release32\Release32\test.xml"); //* load the XML document from the specified file.
+            xmlPersones.Load(string.Format("{0}/{1}", _biosandboxHome, _fileTest)); //* load the XML document from the specified file.
 
             //textBox1.Text = xmlPersones.OuterXml;
 
@@ -126,10 +133,10 @@ namespace FaceRecognitionClient.Threading
             e.Result = ComparePersonsWithUDF();
         }
 
-        public void AsyncComparePersonsWithUDF()
+        public void AsyncComparePersonsWithUDF(string fileTest)
         {
+            _fileTest = fileTest;
             _worker.DoWork += new DoWorkEventHandler(ComparePersonsWithUDFDoWork);
-
             _worker.RunWorkerAsync();
         }
     }
