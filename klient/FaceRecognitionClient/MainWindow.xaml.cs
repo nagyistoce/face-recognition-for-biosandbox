@@ -45,7 +45,7 @@ namespace FaceRecognitionClient
             button2.IsEnabled = true;
             radioButton1.IsEnabled = true;
             radioButton2.IsEnabled = true;
-
+          
             progressBar1.IsIndeterminate = false;
         }
 
@@ -53,19 +53,19 @@ namespace FaceRecognitionClient
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             StartAsyncOperation();
-            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted);
-            bc.AsyncUploadPersons();
+            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
+            bc.AsyncUploadPersons("persones.xml", "db.xml");
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             StartAsyncOperation();
-            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted);
+            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
 
             // s UDF
             if ((bool)radioButton1.IsChecked)
             {
-                bc.AsyncComparePersonsWithUDF();
+                bc.AsyncComparePersonsWithUDF("test.xml");
             }
         }
 
