@@ -32,6 +32,7 @@ namespace FaceRecognitionClient
         {
             button1.IsEnabled = false;
             button2.IsEnabled = false;
+            button3.IsEnabled = false;
             radioButton1.IsEnabled = false;
             radioButton2.IsEnabled = false;
 
@@ -42,6 +43,7 @@ namespace FaceRecognitionClient
         {
             button1.IsEnabled = true;
             button2.IsEnabled = true;
+            button3.IsEnabled = true;
             radioButton1.IsEnabled = true;
             radioButton2.IsEnabled = true;
           
@@ -68,7 +70,7 @@ namespace FaceRecognitionClient
             }
         }
 
-        private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        public void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // First, handle the case where an exception was thrown. 
             if (e.Error != null)
@@ -97,8 +99,13 @@ namespace FaceRecognitionClient
         private void button3_Click(object sender, RoutedEventArgs e)
         {
             //test 
+            StartAsyncOperation();
             TrainingWindow t = new TrainingWindow();
-            t.Show();
+            t.Show(this);
+
+            //StartAsyncOperation();
+            //BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
+            //bc.AsyncTrening();
         }
 
     }

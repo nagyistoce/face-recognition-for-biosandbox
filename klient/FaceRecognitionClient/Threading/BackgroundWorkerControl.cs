@@ -5,10 +5,14 @@ using System.Text;
 using System.ComponentModel;
 using System.Threading;
 using System.Xml;
+using System.Diagnostics;
+using System.IO;
+
 
 namespace FaceRecognitionClient.Threading
 {
     public delegate void DBackgroundWorkerCallback(object sender, RunWorkerCompletedEventArgs e);
+
     class BackgroundWorkerControl
     {
         private BackgroundWorker _worker;
@@ -18,6 +22,9 @@ namespace FaceRecognitionClient.Threading
         private string _filePersones;   // persones.xml - nas format pre mena osob a ich trenovacich vektorov
         private string _fileDb;         // db.xml - biosandbox
         private string _fileTest;       // test.xml - nas format pre testovaci vektor
+
+        private Process _pBiosandbox;
+        private string _tmpCaptureXml;
 
         public BackgroundWorkerControl(DBackgroundWorkerCallback callback, string biosandboxHome)
         {
@@ -30,6 +37,9 @@ namespace FaceRecognitionClient.Threading
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_callback);
         }
 
+        //
+        // Manualny upload osoby do databazy
+        //
         private string UploadPersons()
         {
             // nacitanie osob
@@ -108,6 +118,9 @@ namespace FaceRecognitionClient.Threading
             _worker.RunWorkerAsync();
         }
 
+        //
+        //  Porovnanie testovacich vektorov pomocou UDF
+        //
         private string ComparePersonsWithUDF()
         {
             XmlDocument xmlPersones = new XmlDocument(); //* create an xml document object.
@@ -139,5 +152,95 @@ namespace FaceRecognitionClient.Threading
             _worker.DoWork += new DoWorkEventHandler(ComparePersonsWithUDFDoWork);
             _worker.RunWorkerAsync();
         }
+
+        //
+        //  Spustenie automatizovaneho treningu
+        //
+        private string Trening()
+        {
+            string tmpCaptureXml, tmpSavePath;
+            this.CreateTmpCaptureXml(out tmpCaptureXml, out tmpSavePath);
+
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.WorkingDirectory = _biosandboxHome;
+//             startInfo.FileName = string.Format("{0}/biosandbox.exe", _biosandboxHome);
+//             startInfo.Arguments = string.Format("{0}/{1}", _biosandboxHome, tmpCaptureXml); 
+            startInfo.FileName = "biosandbox.exe";
+            startInfo.Arguments = tmpCaptureXml;
+
+            //Vista or higher check
+            if (System.Environment.OSVersion.Version.Major >= 6)
+            {
+                startInfo.Verb = "runas";
+            }
+            Process p = Process.Start(startInfo);
+
+            _pBiosandbox = p;
+            _tmpCaptureXml = tmpCaptureXml;
+
+            return "";
+        }
+
+        private void CreateTmpCaptureXml(out string tmpCaptureXml,out string tmpSavePath)
+        {
+            tmpCaptureXml = string.Format("capture_{0}.xml", Tools.RandomString(6));
+            tmpSavePath =  string.Format("faces{0}", Tools.RandomString(6));
+
+            XmlDocument xmlTemporary = new XmlDocument();
+            xmlTemporary.Load(string.Format("{0}/capture.xml", _biosandboxHome));
+
+            XmlNodeList nodes = xmlTemporary.GetElementsByTagName("Finishing");
+            XmlNodeList childnodes = nodes[0].ChildNodes;
+
+            foreach (XmlNode node in childnodes)
+            {
+                if (node.Name == "Module")
+                {
+                    XmlAttributeCollection atributes = node.Attributes;
+
+                    foreach(XmlAttribute a in atributes)
+                    {
+                        if (a.Name == "savePath")
+                        {
+                            a.Value = tmpSavePath + "/";
+                        }
+                    }
+                }
+            }
+
+            // POZOR POZOR
+            // ulozenie docasnych suborov, pozor treba neskor zmazat
+            xmlTemporary.Save(string.Format("{0}/{1}", _biosandboxHome, tmpCaptureXml));
+            // vytvorenie adresaru, tiez treba potom zmazt
+            Directory.CreateDirectory(string.Format("{0}/{1}", _biosandboxHome, tmpSavePath));
+        }
+
+        private void TreningDoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            e.Result = Trening();
+        }
+
+        public void AsyncTrening()
+        {
+            _worker.DoWork += new DoWorkEventHandler(TreningDoWork);
+            _worker.RunWorkerAsync();
+        }
+
+        public void BeginTreningEnd()
+        {
+
+            if (_biosandboxHome != null)
+            {
+                _pBiosandbox.Kill();
+                _pBiosandbox.Close();
+                File.Delete(string.Format("{0}/{1}", _biosandboxHome, _tmpCaptureXml));
+            }
+            //_pBiosandbox.Kill();
+            //_pBiosandbox.Close();
+            //File.Delete(string.Format("{0}/{1}", _biosandboxHome, _tmpCaptureXml));
+        }
+
     }
 }
