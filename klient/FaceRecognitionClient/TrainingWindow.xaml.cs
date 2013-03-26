@@ -73,6 +73,7 @@ namespace FaceRecognitionClient
                 //_parent.textBox1.Text += i;
                 _bc.BeginTreningEnd();
                 _dispatcherTimer.Stop();
+                _parent.EndAsyncOperation();
                 this.Close();
             }
             

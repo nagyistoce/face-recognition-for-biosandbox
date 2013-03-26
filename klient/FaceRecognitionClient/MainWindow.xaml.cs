@@ -39,7 +39,7 @@ namespace FaceRecognitionClient
             progressBar1.IsIndeterminate = true;
         }
 
-        private void EndAsyncOperation()
+        public void EndAsyncOperation()
         {
             button1.IsEnabled = true;
             button2.IsEnabled = true;
@@ -93,16 +93,18 @@ namespace FaceRecognitionClient
                 // succeeded.
                 textBox1.Text = e.Result.ToString();
             }
-            EndAsyncOperation();
+            if (e.Result.ToString() != "")
+                EndAsyncOperation();
         }
 
         private void button3_Click(object sender, RoutedEventArgs e)
         {
-            //test 
+            //test            
             StartAsyncOperation();
+            //this.IsEnabled = false;
             TrainingWindow t = new TrainingWindow();
             t.Show(this);
-
+            
             //StartAsyncOperation();
             //BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
             //bc.AsyncTrening();
