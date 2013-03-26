@@ -26,7 +26,6 @@ namespace FaceRecognitionClient
         public MainWindow()
         {
             InitializeComponent();
-
         }
 
         private void StartAsyncOperation()
@@ -93,6 +92,13 @@ namespace FaceRecognitionClient
                 textBox1.Text = e.Result.ToString();
             }
             EndAsyncOperation();
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            //test 
+            TrainingWindow t = new TrainingWindow();
+            t.Show();
         }
 
     }
