@@ -111,6 +111,10 @@ function udfRecognitionTest($xmlfile){
 	return "Chyba parsovania";
 }
 
+function plainRecognitionTest($xmlfile){
+  return "Ok!";
+}
+
 function uploadAndTest($xmlfile){
 
   $dbusername = "tp";
