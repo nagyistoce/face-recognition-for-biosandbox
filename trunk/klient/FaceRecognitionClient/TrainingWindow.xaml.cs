@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using FaceRecognitionClient.Threading;
 using System.Threading;
+using System.ComponentModel;
 
 namespace FaceRecognitionClient
 {
@@ -29,8 +30,8 @@ namespace FaceRecognitionClient
         {
             InitializeComponent();
 
-            this.Top = 0;
-            this.Left = SystemParameters.PrimaryScreenWidth - this.Width;
+            this.Top = 10;
+            this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 10;
         }
 
         public void Show(MainWindow parent)
@@ -47,9 +48,8 @@ namespace FaceRecognitionClient
             label2.Content = 0;
             
             _dispatcherTimer.Start();
-
             
-            _bc = new BackgroundWorkerControl(_parent.BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
+            _bc = new BackgroundWorkerControl(this.BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
             _bc.AsyncTrening();
         }
 
@@ -70,13 +70,48 @@ namespace FaceRecognitionClient
                 label1.Content = "Natoč sa doprava";
             else
             {
-                //_parent.textBox1.Text += i;
-                _bc.BeginTreningEnd();
-                _dispatcherTimer.Stop();
-                _parent.EndAsyncOperation();
-                this.Close();
+                this.EndProcess();
             }
-            
+        }
+
+        private void EndProcess()
+        {
+            _bc.BeginTreningEnd();
+            _parent.EndAsyncOperation();
+            _dispatcherTimer.Stop();
+            this.Close();        
+        }
+
+        private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            // First, handle the case where an exception was thrown. 
+            if (e.Error != null)
+            {
+                _parent.textBox1.Text += "\nLog: " + e.Error.Message;
+                this.EndProcess();
+            }
+            else if (e.Cancelled) // sem by nikdy nemal vbehnut
+            {
+                // Next, handle the case where the user canceled  
+                // the operation. 
+                // Note that due to a race condition in  
+                // the DoWork event handler, the Cancelled 
+                // flag may not have been set, even though 
+                // CancelAsync was called.
+                _parent.textBox1.Text += "\nLog: " + "Canceled";
+                this.EndProcess();
+            }
+            else
+            {
+                // Finally, handle the case where the operation  
+                // succeeded.
+                _parent.textBox1.Text = e.Result.ToString();
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            this.EndProcess();
         }
     }
 }
