@@ -163,13 +163,39 @@ namespace FaceRecognitionClient.Threading
             _worker.RunWorkerAsync();
         }
 
+        private void TreningUploadDoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            //_trening = new Trening(_biosandboxHome);
+
+            e.Result = _trening.DoUpload();
+        }
+
+        public void AsyncTreningUpload(DateTime[] times, string name)
+        {
+            _worker.DoWork += new DoWorkEventHandler(TreningUploadDoWork);
+            _trening.Times = times;
+            _trening.TrainName = name;
+            _worker.RunWorkerAsync();
+        }
+
         public void BeginTreningEnd()
         {
             if (_trening != null)
             {
                 _trening.KillBiosandboxProcess();
+                _worker.DoWork -= new DoWorkEventHandler(TreningDoWork);
             }
         }
 
+        public void BeginTreningUploadEnd()
+        {
+            if (_trening != null)
+            {
+                _worker.DoWork -= new DoWorkEventHandler(TreningUploadDoWork);
+                _trening.RemoveTemporaryFiles();
+            }
+        }
     }
 }
