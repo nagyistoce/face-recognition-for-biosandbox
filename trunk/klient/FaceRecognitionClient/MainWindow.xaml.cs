@@ -76,7 +76,7 @@ namespace FaceRecognitionClient
             // First, handle the case where an exception was thrown. 
             if (e.Error != null)
             {
-                textBox1.Text = e.Error.Message;
+                textBox1.Text += Tools.GetErrorMessage(e.Error.Message);
             }
             else if (e.Cancelled) // sem by nikdy nemal vbehnut
             {
@@ -86,13 +86,13 @@ namespace FaceRecognitionClient
                 // the DoWork event handler, the Cancelled 
                 // flag may not have been set, even though 
                 // CancelAsync was called.
-                textBox1.Text = "Canceled";
+                textBox1.Text += Tools.GetLogMessage("Canceled");
             }
             else
             {
                 // Finally, handle the case where the operation  
                 // succeeded.
-                textBox1.Text = e.Result.ToString();
+                textBox1.Text += Tools.GetLogMessage(e.Result.ToString());
             }
             EndAsyncOperation();
         }
@@ -102,8 +102,13 @@ namespace FaceRecognitionClient
         {        
             StartAsyncOperation();
 
+            if (textBox2.Text.Length < 1)
+            {
+                textBox1.Text += Tools.GetLogMessage("Pred trenovanim je potrebne zadat meno osoby.");
+            }
+
             _train = new TrainingWindow();
-            _train.Show(this);
+            _train.Show(this, textBox2.Text);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)

@@ -21,5 +21,15 @@ namespace FaceRecognitionClient
 
             return builder.ToString();
         }
+
+        public static string GetLogMessage(string message)
+        {
+            return string.Format("[{0}]Log: {1}\n", DateTime.Now, message);
+        }
+
+        public static string GetErrorMessage(string message)
+        {
+            return string.Format("[{0}]Error: {1}\n", DateTime.Now, message);
+        }
     }
 }

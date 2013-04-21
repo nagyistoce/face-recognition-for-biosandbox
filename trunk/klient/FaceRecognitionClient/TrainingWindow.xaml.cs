@@ -26,6 +26,9 @@ namespace FaceRecognitionClient
         private BackgroundWorkerControl _bc;
         private DispatcherTimer _dispatcherTimer;
 
+        private string _personName;
+        private DateTime[] _times;
+
         public TrainingWindow()
         {
             InitializeComponent();
@@ -34,9 +37,11 @@ namespace FaceRecognitionClient
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 10;
         }
 
-        public void Show(MainWindow parent)
+        public void Show(MainWindow parent, string personName)
         {
             _parent = parent;
+            _personName = personName;
+            _times = new DateTime[3];
             this.Show();
         }
 
@@ -62,6 +67,14 @@ namespace FaceRecognitionClient
             i++;
             label2.Content = i;
 
+            // vyber akychsi strednych casov, obrazky, ktorych cas vytvorenia sa bude blizit k nim sa odoslu na DB
+            if (i == 5)
+                _times[0] = DateTime.Now;
+            if (i == 9)
+                _times[1] = DateTime.Now;
+            if (i == 13)
+                _times[2] = DateTime.Now;
+
             if (i < 7)
                 label1.Content = "Pozeraj sa rovno";
             else if (i < 11)
@@ -70,16 +83,24 @@ namespace FaceRecognitionClient
                 label1.Content = "Natoč sa doprava";
             else
             {
-                this.EndProcess();
+                this.EndBiosandboxProc();
+                label1.Content = "Snímky sa odosielajú do databázy";
+                _bc.AsyncTreningUpload(_times, _personName);
             }
+        }
+
+        private void EndBiosandboxProc()
+        {
+            _bc.BeginTreningEnd();
+            _dispatcherTimer.Stop();
         }
 
         private void EndProcess()
         {
-            _bc.BeginTreningEnd();
+            _bc.BeginTreningUploadEnd();
             _parent.EndAsyncOperation();
             _dispatcherTimer.Stop();
-            this.Close();        
+            this.Close();
         }
 
         private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -87,8 +108,8 @@ namespace FaceRecognitionClient
             // First, handle the case where an exception was thrown. 
             if (e.Error != null)
             {
-                _parent.textBox1.Text += "\nLog: " + e.Error.Message;
-                this.EndProcess();
+                _parent.textBox1.Text += Tools.GetErrorMessage(e.Error.Message);
+                this.EndBiosandboxProc();
             }
             else if (e.Cancelled) // sem by nikdy nemal vbehnut
             {
@@ -98,20 +119,23 @@ namespace FaceRecognitionClient
                 // the DoWork event handler, the Cancelled 
                 // flag may not have been set, even though 
                 // CancelAsync was called.
-                _parent.textBox1.Text += "\nLog: " + "Canceled";
-                this.EndProcess();
+                _parent.textBox1.Text += Tools.GetLogMessage("Canceled");
+                this.EndBiosandboxProc();
             }
             else
             {
                 // Finally, handle the case where the operation  
                 // succeeded.
-                _parent.textBox1.Text = e.Result.ToString();
+                _parent.textBox1.Text += Tools.GetLogMessage(e.Result.ToString());
+
+                if (e.Result.ToString().StartsWith("Upload"))
+                    this.EndProcess();
             }
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            this.EndProcess();
+            this.EndBiosandboxProc();
         }
     }
 }
