@@ -23,6 +23,7 @@ namespace FaceRecognitionClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        private TrainingWindow _train = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -50,7 +51,7 @@ namespace FaceRecognitionClient
             progressBar1.IsIndeterminate = false;
         }
 
-        // upload osob TODO refaktorizacia
+        // upload osob
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             StartAsyncOperation();
@@ -70,7 +71,7 @@ namespace FaceRecognitionClient
             }
         }
 
-        public void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             // First, handle the case where an exception was thrown. 
             if (e.Error != null)
@@ -93,22 +94,24 @@ namespace FaceRecognitionClient
                 // succeeded.
                 textBox1.Text = e.Result.ToString();
             }
-            if (e.Result.ToString() != "")
-                EndAsyncOperation();
+            EndAsyncOperation();
         }
 
+        // trenovacie vzorky
         private void button3_Click(object sender, RoutedEventArgs e)
-        {
-            //test            
+        {        
             StartAsyncOperation();
-            //this.IsEnabled = false;
-            TrainingWindow t = new TrainingWindow();
-            t.Show(this);
-            
-            //StartAsyncOperation();
-            //BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
-            //bc.AsyncTrening();
+
+            _train = new TrainingWindow();
+            _train.Show(this);
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (_train != null)
+            {
+                _train.Close();
+            }
+        }
     }
 }
