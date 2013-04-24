@@ -187,7 +187,7 @@ function uploadAndTest($xmlfile){
   }
   
   $result = $dataSize;
-  return "zmenene! : ok, pocet prvkov je $result";
+  return "ok, pocet vektorov: $result";
   
 }
 
