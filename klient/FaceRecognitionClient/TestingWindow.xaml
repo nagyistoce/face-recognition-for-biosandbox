@@ -1,0 +1,13 @@
+﻿<Window x:Class="FaceRecognitionClient.TestingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Tréning" Height="200" Width="400" Loaded="Window_Loaded"
+        WindowStartupLocation="Manual" 
+        Topmost="True" Closed="Window_Closed"
+        ResizeMode="NoResize">
+    <Grid>
+        <Label Content="Test" Height="60" HorizontalAlignment="Left" FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="39,28,0,0" Name="label1" VerticalAlignment="Top" Width="300" FontWeight="Bold" FontStretch="Normal" />
+        <Button Content="Cancel" Height="23" HorizontalAlignment="Left" Margin="155,115,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Button Content="Start" Height="23" HorizontalAlignment="Left" Margin="155,86,0,0" Name="button2" VerticalAlignment="Top" Width="75" Click="button2_Click" />
+    </Grid>
+</Window>
