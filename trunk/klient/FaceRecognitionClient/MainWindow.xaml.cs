@@ -24,6 +24,7 @@ namespace FaceRecognitionClient
     public partial class MainWindow : Window
     {
         private TrainingWindow _train = null;
+        private TestingWindow _test = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,7 +32,6 @@ namespace FaceRecognitionClient
 
         private void StartAsyncOperation()
         {
-            button1.IsEnabled = false;
             button2.IsEnabled = false;
             button3.IsEnabled = false;
             radioButton1.IsEnabled = false;
@@ -42,7 +42,6 @@ namespace FaceRecognitionClient
 
         public void EndAsyncOperation()
         {
-            button1.IsEnabled = true;
             button2.IsEnabled = true;
             button3.IsEnabled = true;
             radioButton1.IsEnabled = true;
@@ -55,20 +54,30 @@ namespace FaceRecognitionClient
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             StartAsyncOperation();
-            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
+            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"), this.textBox1);
             bc.AsyncUploadPersons("persones.xml", "db.xml");
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            StartAsyncOperation();
-            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"));
+//             StartAsyncOperation();
+//             BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"), this.textBox1);
+// 
+//             // s UDF
+//             if ((bool)radioButton1.IsChecked)
+//             {
+//                 bc.AsyncComparePersonsWithUDF("test.xml");
+//            }
 
-            // s UDF
-            if ((bool)radioButton1.IsChecked)
-            {
-                bc.AsyncComparePersonsWithUDF("test.xml");
-            }
+            StartAsyncOperation();
+// 
+//             if (textBox2.Text.Length < 1)
+//             {
+//                 textBox1.Text += Tools.GetLogMessage("Pred trenovanim je potrebne zadat meno osoby.");
+//             }
+
+            _test = new TestingWindow();
+            _test.Show(this, textBox2.Text);
         }
 
         private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -116,6 +125,11 @@ namespace FaceRecognitionClient
             if (_train != null)
             {
                 _train.Close();
+            }
+
+            if (_test != null)
+            {
+                _test.Close();
             }
         }
     }

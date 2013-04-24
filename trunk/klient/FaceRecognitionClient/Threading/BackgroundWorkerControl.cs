@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Xml;
+using System.Windows.Controls;
 
 namespace FaceRecognitionClient.Threading
 {
@@ -17,8 +18,11 @@ namespace FaceRecognitionClient.Threading
         private string _fileTest;       // test.xml - nas format pre testovaci vektor
 
         private Trening _trening = null;       // automaticke trenovanie vektorov
+        private Test _test = null;             // automaticke testovanie vektorov
 
-        public BackgroundWorkerControl(DBackgroundWorkerCallback callback, string biosandboxHome)
+        private TextBox _textbox;
+
+        public BackgroundWorkerControl(DBackgroundWorkerCallback callback, string biosandboxHome, TextBox textBox)
         {
             _biosandboxHome = biosandboxHome;
             _worker = new BackgroundWorker();
@@ -27,6 +31,8 @@ namespace FaceRecognitionClient.Threading
             _worker.WorkerReportsProgress = false;
             _worker.WorkerSupportsCancellation = false;
             _worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(_callback);
+
+            _textbox = textBox;
         }
 
         //
@@ -152,7 +158,7 @@ namespace FaceRecognitionClient.Threading
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            _trening = new Trening(_biosandboxHome);
+            _trening = new Trening(_biosandboxHome, _textbox);
 
             e.Result = _trening.DoTrening();
         }
@@ -195,6 +201,51 @@ namespace FaceRecognitionClient.Threading
             {
                 _worker.DoWork -= new DoWorkEventHandler(TreningUploadDoWork);
                 _trening.RemoveTemporaryFiles();
+            }
+        }
+
+        //
+        //  Spustenie automatizovaneho testovania
+        //
+        private void TestDoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            _test = new Test(_biosandboxHome, _textbox);
+
+            e.Result = _test.DoTest();
+        }
+
+        public void AsyncTest()
+        {
+            _worker.DoWork += new DoWorkEventHandler(TestDoWork);
+            _worker.RunWorkerAsync();
+        }
+
+        private void TestUploadDoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+
+            e.Result = _test.DoUpload();
+        }
+
+        public void AsyncTestUpload()
+        {
+            _worker.DoWork -= new DoWorkEventHandler(TestDoWork);
+            _worker.DoWork += new DoWorkEventHandler(TestUploadDoWork);
+            
+            _worker.RunWorkerAsync();
+        }
+
+        public void BeginTestEnd()
+        {
+            if (_test != null)
+            {
+                _test.KillBiosandboxProcess();
+                _worker.DoWork -= new DoWorkEventHandler(TestDoWork);
+                _worker.DoWork -= new DoWorkEventHandler(TestUploadDoWork);
+                _test.RemoveTemporaryFiles();
+                _test = null;
             }
         }
     }

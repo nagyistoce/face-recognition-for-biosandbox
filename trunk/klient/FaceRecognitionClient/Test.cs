@@ -9,12 +9,12 @@ using System.Windows.Controls;
 namespace FaceRecognitionClient
 {
     /*
-     * v tejto triede by mal byt kod ktory sa vykonava pocas treningu na pozadi
+     * v tejto triede by mal byt kod ktory sa vykonava pocas testovania na pozadi
      * jej zmysel je v tom ze odlahci triedu BackgroundWorkerControl od dalsieho kodu
      * v podstate jej public metody spusta BackgroundWorkerControl
      */
 
-    class Trening
+    class Test
     {
         private string _biosandboxHome;         // Enviroment variable BIOSANDBOX_HOME
         private Process _pBiosandbox = null;    // proces biosandboxu
@@ -25,9 +25,9 @@ namespace FaceRecognitionClient
         private string _tmpTrainTxt;        // docasny txt subor train.txt, obsahuje cestu k snimkom
         private string _tmpTrainXml;        // docasny xml subor train.xml, konfigurak pre biosandbox.exe
         private string _tmpDbXml;           // docasny xml subor db.xml, vystupne trenovacie vektory
-        private DateTime[] _times = null;
-        private string _trainName;
+        private DateTime[] _times;
 
+        //private string _trainName;
         private TextBox _textBox;
 
         private struct SFile
@@ -36,30 +36,13 @@ namespace FaceRecognitionClient
             public DateTime fileCreated;
         }
 
-
-        public Trening(string biosandboxHome, TextBox textbox)
+        public Test(string biosandboxHome, TextBox textbox)
         {
             _biosandboxHome = biosandboxHome;
             _textBox = textbox;
         }
 
-        public DateTime[] Times
-        {
-            set
-            {
-                _times = value;
-            }
-        }
-
-        public string TrainName
-        {
-            set
-            {
-                _trainName = value;
-            }
-        }
-
-        public string DoTrening()
+        public string DoTest()
         {
             string tmpCaptureXml, tmpSavePath;
             this.CreateTmpCaptureXml(out tmpCaptureXml, out tmpSavePath);
@@ -79,7 +62,7 @@ namespace FaceRecognitionClient
 
             _tmpCaptureXml = tmpCaptureXml;
             _tmpSavePath = tmpSavePath;
-            return "Start trening";
+            return "Start test";
         }
 
         public string DoUpload()
@@ -87,8 +70,10 @@ namespace FaceRecognitionClient
             if (_tmpSavePath.Length < 1)
                 return "ERROR: Temporary save path does not exist.";
 
-            if (_times == null)
-                return "ERROR: Capture times are empty.";
+            //if (_times == null)
+            //    return "ERROR: Capture times are empty.";
+            _times = new DateTime[1];
+            _times[0] = DateTime.Now;
 
             _tmpTrainTxt = CreateTrainTxt(_times);
             CreateTrainXml(out _tmpTrainXml, out _tmpDbXml);
@@ -124,22 +109,12 @@ namespace FaceRecognitionClient
 
             // nove xml pre request
             XmlDocument request = new XmlDocument();
-            XmlNode requestRoot = request.AppendChild(request.CreateElement("Upload"));
-
-            //  sparsovanie a vytvorenie noveho pre jedneho cloveka s vektormi
-            XmlNode requestPerson = requestRoot.AppendChild(request.CreateElement("Person"));
+            XmlNode requestRoot = request.AppendChild(request.CreateElement("Test"));
 
             // pridanie elementu datas
-            XmlNode requestDatas = requestPerson.AppendChild(request.CreateElement("Datas"));
-            XmlAttribute requestDatasSize = requestDatas.Attributes.Append(request.CreateAttribute("size"));
+            // minus 1 preto, lebo jeden element data je pouzity v inom kontexte ako data trenovacieho vektoru
             vectorsCount = xmlVectors.GetElementsByTagName("data").Count - 1;
-            requestDatasSize.InnerText = vectorsCount.ToString();    // minus 1 preto, lebo jeden element data je pouzity v inom kontexte ako data trenovacieho vektoru
-
-            // pridanie noveho mena
-            XmlNode requestName = requestPerson.AppendChild(request.CreateElement("Name"));
-            XmlAttribute requestNameValue = requestName.Attributes.Append(request.CreateAttribute("value"));
-            requestNameValue.InnerText = _trainName;
-     
+       
             // pridanie vektorov
             for (int i = 0; i < vectorsCount; i++)
             {
@@ -147,14 +122,16 @@ namespace FaceRecognitionClient
                 string personVector = vector.LastChild.InnerText;
 
                 // pridanie vektoru
-                XmlNode requestData = requestDatas.AppendChild(request.CreateElement("Data"));
+                XmlNode requestData = requestRoot.AppendChild(request.CreateElement("Vector"));
                 requestData.InnerText = personVector;
+                XmlAttribute id = requestData.Attributes.Append(request.CreateAttribute("id"));
+                id.InnerText = i.ToString();
             }
 
             string requestString = request.OuterXml;
 
             ServiceReference3.recognitionwsdlPortType client = new ServiceReference3.recognitionwsdlPortTypeClient();
-            return client.uploadAndTest("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
+            return client.udfRecognitionTest("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
         }
 
         private void CreateTrainXml(out string tmpTrainXml, out string tmpDbXml)
@@ -260,11 +237,14 @@ namespace FaceRecognitionClient
         {
             if (_biosandboxHome != null && _tmpCaptureXml != null && _pBiosandbox != null && _pBiosandbox.HasExited == false)
             {
-                try {
+                try
+                {
                     _pBiosandbox.Kill();
                     _pBiosandbox.Close();
                     _pBiosandbox = null;
-                } catch (Exception exc) {
+                }
+                catch (Exception exc)
+                {
                     _textBox.Text += Tools.GetLogMessage(exc.Message);
                 }
             }
