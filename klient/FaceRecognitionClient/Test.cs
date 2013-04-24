@@ -17,7 +17,8 @@ namespace FaceRecognitionClient
     class Test
     {
         private string _biosandboxHome;         // Enviroment variable BIOSANDBOX_HOME
-        private Process _pBiosandbox = null;    // proces biosandboxu
+        private Process _pBiosandboxCapture = null;    // proces biosandboxu
+        private Process _pBiosandboxTrain = null;
         private string _tmpCaptureXml;          // docasny xml subor capture.xml
         private string _tmpSavePath;            // docasna zlozka faces, snimky trenovacej osoby
 
@@ -58,7 +59,7 @@ namespace FaceRecognitionClient
             {
                 startInfo.Verb = "runas";
             }
-            _pBiosandbox = Process.Start(startInfo);
+            _pBiosandboxCapture = Process.Start(startInfo);
 
             _tmpCaptureXml = tmpCaptureXml;
             _tmpSavePath = tmpSavePath;
@@ -90,9 +91,9 @@ namespace FaceRecognitionClient
             {
                 startInfo.Verb = "runas";
             }
-            _pBiosandbox = Process.Start(startInfo);
+            _pBiosandboxTrain = Process.Start(startInfo);
 
-            while (_pBiosandbox.HasExited == false)
+            while (_pBiosandboxTrain.HasExited == false)
             {
                 Thread.Sleep(250);
             }
@@ -235,13 +236,27 @@ namespace FaceRecognitionClient
 
         public void KillBiosandboxProcess()
         {
-            if (_biosandboxHome != null && _tmpCaptureXml != null && _pBiosandbox != null && _pBiosandbox.HasExited == false)
+            if (_biosandboxHome != null && _tmpCaptureXml != null && _pBiosandboxCapture != null && _pBiosandboxCapture.HasExited == false)
             {
                 try
                 {
-                    _pBiosandbox.Kill();
-                    _pBiosandbox.Close();
-                    _pBiosandbox = null;
+                    _pBiosandboxCapture.Kill();
+                    _pBiosandboxCapture.Close();
+                    _pBiosandboxCapture = null;
+                }
+                catch (Exception exc)
+                {
+                    _textBox.Text += Tools.GetLogMessage(exc.Message);
+                }
+            }
+
+            if (_biosandboxHome != null && _tmpCaptureXml != null && _pBiosandboxTrain != null && _pBiosandboxTrain.HasExited == false)
+            {
+                try
+                {
+                    _pBiosandboxTrain.Kill();
+                    _pBiosandboxTrain.Close();
+                    _pBiosandboxTrain = null;
                 }
                 catch (Exception exc)
                 {
