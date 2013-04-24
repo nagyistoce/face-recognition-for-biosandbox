@@ -182,8 +182,8 @@ function uploadAndTest($xmlfile){
 
   }
   
-  
-  return "ok";
+  $result = count($datas);
+  return "ok, pocet prvkov je $result";
   
 }
 
