@@ -172,9 +172,9 @@ function uploadAndTest($xmlfile){
     }
     
 	foreach($datas as $data){
-	  $data->nodeValue;
+	  //$data->nodeValue;
 	  $arr = array(
-        'vector' => $data,
+        'vector' => $data->nodeValue,
 	    'idperson' => $osid[0],
       );
 	  dibi::query('INSERT INTO  vector', $arr);
