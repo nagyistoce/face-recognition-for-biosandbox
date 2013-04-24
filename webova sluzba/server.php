@@ -111,6 +111,69 @@ function udfRecognitionTest($xmlfile){
 	return "Chyba parsovania";
 }
 
+function udfRecognitionTest2($xmlfile){
+
+  $dbusername = "tp";
+  $dbpassword = "tp2012";
+  $dbserver = "localhost";
+  $dbid = "face_recognition";
+  dibi::connect(array(
+      'driver'   => 'mysql',
+      'host'     => $dbserver,
+      'username' => $dbusername,
+      'password' => $dbpassword,
+      'database' => $dbid,
+      'charset'  => 'utf8',
+     )); 
+
+  //Set up the parser object
+  $parser = new DOMDocument();
+  $parser->loadXML($xmlfile);
+  
+  $maxDistance = 100;
+  $minPersonId = -1;
+	
+	
+  $vectors = $parser->getElementsByTagName("Vector");
+  
+  foreach($vectors as $vector){
+
+    $vectorData= $vector->nodeValue;
+	
+	//vnoreny foreach - pre vsetky vektory v databaze a pre vsetky vectory v xml testuj vzdialenost
+	  $result = dibi::query('SELECT FindPerson(%s)', $vectorData);
+
+	  $persons_id = array();
+      $podobnost = array();
+    
+      foreach ($result as $n => $row){
+	     array_push($persons_id, $row['id_person_res']);
+         array_push($podobnost, $row['min_dist']);
+      }
+	
+	  if(empty($podobnost)){
+	    return "Chyba";
+	  }
+	
+	  //porovnanie s minimalnou vzdialenostou a osetrenie, ci nenastala chyba
+	  if($podobnost[0]>$maxDistance || $podobnost[0]==-1){
+		return "Nenasla sa zhoda!";
+	  }
+	
+	//selectne meno osoby , ktora vlastni vector s minimalnou vzdialenostou
+	$result = dibi::query('SELECT name FROM person WHERE idperson=%i', $persons_id[0]);
+
+    $menoRozpoznanejOsoby=array();
+    
+      foreach ($result as $n => $row){
+         array_push($menoRozpoznanejOsoby, $row['name']);
+      }
+	  
+	return "OK! value=$podobnost[0] idPerson=$persons_id[0] meno=$menoRozpoznanejOsoby[0]";
+  }
+	return "Chyba parsovania";
+}
+
 function plainRecognitionTest($xmlfile){
   return "Ok!";
 }
