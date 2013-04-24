@@ -256,9 +256,13 @@ namespace FaceRecognitionClient
         {
             if (_biosandboxHome != null && _tmpCaptureXml != null && _pBiosandbox != null)
             {
-                _pBiosandbox.Kill();
-                _pBiosandbox.Close();
-                _pBiosandbox = null;
+                try {
+                    _pBiosandbox.Kill();
+                    _pBiosandbox.Close();
+                    _pBiosandbox = null;
+                } catch (Exception exc) {
+                    
+                }
             }
         }
 
