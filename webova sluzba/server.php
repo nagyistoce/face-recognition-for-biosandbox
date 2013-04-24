@@ -143,7 +143,11 @@ function uploadAndTest($xmlfile){
     $attr= $names->item(0)->attributes;
 	$i = $attr->getNamedItem("value");
 	$meno = $i->nodeValue;
-	$datas= $person->getElementsByTagName("Data");
+	$datas= $person->getElementsByTagName("Datas");
+	$dataAttr = $datas->item(0)->attributes;
+	$i2 = $dataAttr->getNamedItem("size");
+	$dataSize = $i2->nodeValue;
+	$data = $person->getElementsByTagName("Data");
 	//$osData = $data->item(0)->nodeValue;
 	$arr = array(
     'name' => $meno,
@@ -171,10 +175,10 @@ function uploadAndTest($xmlfile){
        array_push($osid, $row['idperson']);
     }
     
-	foreach($datas as $data){
+	for($i=0;$i<$dataSize;$i++){
 	  //$data->nodeValue;
 	  $arr = array(
-        'vector' => $data->nodeValue,
+        'vector' => $data->item($i)->nodeValue,
 	    'idperson' => $osid[0],
       );
 	  dibi::query('INSERT INTO  vector', $arr);
@@ -182,7 +186,7 @@ function uploadAndTest($xmlfile){
 
   }
   
-  $result = count($datas);
+  $result = $dataSize;
   return "zmenene! : ok, pocet prvkov je $result";
   
 }
