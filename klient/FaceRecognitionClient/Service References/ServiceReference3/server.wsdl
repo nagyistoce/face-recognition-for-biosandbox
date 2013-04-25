@@ -18,6 +18,12 @@
   <wsdl:message name="udfRecognitionTestResponse">
     <wsdl:part name="return" type="xsd:string" />
   </wsdl:message>
+  <wsdl:message name="udfRecognitionTest2Request">
+    <wsdl:part name="xmlfile" type="xsd:string" />
+  </wsdl:message>
+  <wsdl:message name="udfRecognitionTest2Response">
+    <wsdl:part name="return" type="xsd:string" />
+  </wsdl:message>
   <wsdl:portType name="recognitionwsdlPortType">
     <wsdl:operation name="uploadAndTest">
       <documentation>Upload new person and train vectors</documentation>
@@ -28,6 +34,11 @@
       <documentation>Test for peson with udf</documentation>
       <wsdl:input message="tns:udfRecognitionTestRequest" />
       <wsdl:output message="tns:udfRecognitionTestResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="udfRecognitionTest2">
+      <documentation>Test for peson with udf</documentation>
+      <wsdl:input message="tns:udfRecognitionTest2Request" />
+      <wsdl:output message="tns:udfRecognitionTest2Response" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="recognitionwsdlBinding" type="tns:recognitionwsdlPortType">
@@ -43,6 +54,15 @@
     </wsdl:operation>
     <wsdl:operation name="udfRecognitionTest">
       <soap:operation soapAction="urn:recognitionwsdl#udfRecognitionTest" style="rpc" />
+      <wsdl:input>
+        <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="udfRecognitionTest2">
+      <soap:operation soapAction="urn:recognitionwsdl#udfRecognitionTest2" style="rpc" />
       <wsdl:input>
         <soap:body use="encoded" namespace="urn:recognitionwsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
       </wsdl:input>

@@ -77,7 +77,10 @@ namespace FaceRecognitionClient
                 _parent.textBox1.Text += Tools.GetLogMessage(e.Result.ToString());
 
                 if (e.Result.ToString().StartsWith("Upload"))
+                {
+                    _parent.textBox1.Text += Tools.GetLogMessage("Start sending content to server");
                     _bc.AsyncTestUpload();
+                }
             }
         }
 
@@ -89,6 +92,8 @@ namespace FaceRecognitionClient
         // start
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            this.button2.IsEnabled = false;
+            _parent.textBox1.Text += Tools.GetLogMessage("Start sending content to server");
             _bc.AsyncTestUpload();
         }
 

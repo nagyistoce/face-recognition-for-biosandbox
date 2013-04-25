@@ -52,7 +52,7 @@ namespace FaceRecognitionClient
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
             label2.Content = 0;
             
-            _dispatcherTimer.Start();
+            //_dispatcherTimer.Start();
             
             _bc = new BackgroundWorkerControl(this.BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"), _parent.textBox1);
             _bc.AsyncTrening();
@@ -109,7 +109,7 @@ namespace FaceRecognitionClient
             if (e.Error != null)
             {
                 _parent.textBox1.Text += Tools.GetErrorMessage(e.Error.Message);
-                this.EndBiosandboxProc();
+                this.EndProcess();
             }
             else if (e.Cancelled) // sem by nikdy nemal vbehnut
             {
@@ -120,7 +120,7 @@ namespace FaceRecognitionClient
                 // flag may not have been set, even though 
                 // CancelAsync was called.
                 _parent.textBox1.Text += Tools.GetLogMessage("Canceled");
-                this.EndBiosandboxProc();
+                this.EndProcess();
             }
             else
             {
@@ -136,6 +136,14 @@ namespace FaceRecognitionClient
         private void Window_Closed(object sender, EventArgs e)
         {
             this.EndBiosandboxProc();
+            _parent.EndAsyncOperation();
+        }
+
+        // start
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            this.button1.Visibility = Visibility.Hidden;
+            _dispatcherTimer.Start();
         }
     }
 }

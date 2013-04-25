@@ -25,6 +25,7 @@ namespace FaceRecognitionClient
     {
         private TrainingWindow _train = null;
         private TestingWindow _test = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -49,62 +50,48 @@ namespace FaceRecognitionClient
           
             progressBar1.IsIndeterminate = false;
         }
-
-        // upload osob
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            StartAsyncOperation();
-            BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"), this.textBox1);
-            bc.AsyncUploadPersons("persones.xml", "db.xml");
-        }
+// 
+//         // upload osob
+//         private void button1_Click(object sender, RoutedEventArgs e)
+//         {
+//             StartAsyncOperation();
+//             BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"), this.textBox1);
+//             bc.AsyncUploadPersons("persones.xml", "db.xml");
+//         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-//             StartAsyncOperation();
-//             BackgroundWorkerControl bc = new BackgroundWorkerControl(BackgroundWorkerCompleted, Environment.ExpandEnvironmentVariables("%BIOSANDBOX_HOME%"), this.textBox1);
-// 
-//             // s UDF
-//             if ((bool)radioButton1.IsChecked)
-//             {
-//                 bc.AsyncComparePersonsWithUDF("test.xml");
-//            }
-
             StartAsyncOperation();
-// 
-//             if (textBox2.Text.Length < 1)
-//             {
-//                 textBox1.Text += Tools.GetLogMessage("Pred trenovanim je potrebne zadat meno osoby.");
-//             }
 
             _test = new TestingWindow();
             _test.Show(this, textBox2.Text);
         }
 
-        private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            // First, handle the case where an exception was thrown. 
-            if (e.Error != null)
-            {
-                textBox1.Text += Tools.GetErrorMessage(e.Error.Message);
-            }
-            else if (e.Cancelled) // sem by nikdy nemal vbehnut
-            {
-                // Next, handle the case where the user canceled  
-                // the operation. 
-                // Note that due to a race condition in  
-                // the DoWork event handler, the Cancelled 
-                // flag may not have been set, even though 
-                // CancelAsync was called.
-                textBox1.Text += Tools.GetLogMessage("Canceled");
-            }
-            else
-            {
-                // Finally, handle the case where the operation  
-                // succeeded.
-                textBox1.Text += Tools.GetLogMessage(e.Result.ToString());
-            }
-            EndAsyncOperation();
-        }
+//         private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+//         {
+//             // First, handle the case where an exception was thrown. 
+//             if (e.Error != null)
+//             {
+//                 textBox1.Text += Tools.GetErrorMessage(e.Error.Message);
+//             }
+//             else if (e.Cancelled) // sem by nikdy nemal vbehnut
+//             {
+//                 // Next, handle the case where the user canceled  
+//                 // the operation. 
+//                 // Note that due to a race condition in  
+//                 // the DoWork event handler, the Cancelled 
+//                 // flag may not have been set, even though 
+//                 // CancelAsync was called.
+//                 textBox1.Text += Tools.GetLogMessage("Canceled");
+//             }
+//             else
+//             {
+//                 // Finally, handle the case where the operation  
+//                 // succeeded.
+//                 textBox1.Text += Tools.GetLogMessage(e.Result.ToString());
+//             }
+//             EndAsyncOperation();
+//         }
 
         // trenovacie vzorky
         private void button3_Click(object sender, RoutedEventArgs e)

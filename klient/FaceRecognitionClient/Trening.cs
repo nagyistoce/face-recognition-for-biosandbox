@@ -287,11 +287,18 @@ namespace FaceRecognitionClient
 
         public void RemoveTemporaryFiles()
         {
-            File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpCaptureXml));
-            File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpDbXml));
-            File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpTrainTxt));
-            File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpTrainXml));
-            Directory.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpSavePath), true);
+            try
+            {
+                File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpCaptureXml));
+                File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpDbXml));
+                File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpTrainTxt));
+                File.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpTrainXml));
+                Directory.Delete(string.Format("{0}\\{1}", _biosandboxHome, _tmpSavePath), true);
+            }
+            catch (Exception e)
+            {
+                _textBox.Text += Tools.GetErrorMessage(e.Message);
+            }
         }
 
         private void CreateTmpCaptureXml(out string tmpCaptureXml, out string tmpSavePath)
