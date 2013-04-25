@@ -31,6 +31,16 @@ $server->register('udfRecognitionTest',                // method name
     'Test for peson with udf'            // documentation
 );
 
+$server->register('udfRecognitionTest2',                // method name
+    array('xmlfile' => 'xsd:string'),        // input parameters
+    array('return' => 'xsd:string'),      // output parameters
+    'urn:recognitionwsdl',                      // namespace
+    'urn:recognitionwsdl#udfRecognitionTest2',                // soapaction
+    'rpc',                                // style
+    'encoded',                            // use
+    'Test for peson with udf'            // documentation
+);
+
 function udfRecognitionTest($xmlfile){
 
   $dbusername = "tp";
