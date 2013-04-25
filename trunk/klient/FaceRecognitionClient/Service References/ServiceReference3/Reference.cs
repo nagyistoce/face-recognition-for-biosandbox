@@ -24,6 +24,11 @@ namespace FaceRecognitionClient.ServiceReference3 {
         [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
         [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
         string udfRecognitionTest(string xmlfile);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="urn:recognitionwsdl#udfRecognitionTest2", ReplyAction="*")]
+        [System.ServiceModel.XmlSerializerFormatAttribute(Style=System.ServiceModel.OperationFormatStyle.Rpc, SupportFaults=true, Use=System.ServiceModel.OperationFormatUse.Encoded)]
+        [return: System.ServiceModel.MessageParameterAttribute(Name="return")]
+        string udfRecognitionTest2(string xmlfile);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -59,6 +64,10 @@ namespace FaceRecognitionClient.ServiceReference3 {
         
         public string udfRecognitionTest(string xmlfile) {
             return base.Channel.udfRecognitionTest(xmlfile);
+        }
+        
+        public string udfRecognitionTest2(string xmlfile) {
+            return base.Channel.udfRecognitionTest2(xmlfile);
         }
     }
 }
