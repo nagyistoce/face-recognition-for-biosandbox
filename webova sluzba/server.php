@@ -170,12 +170,13 @@ function udfRecognitionTest2($xmlfile){
 		return "Nenasla sa zhoda!";
 	  }
 	
+	$result->free();
 	//selectne meno osoby , ktora vlastni vector s minimalnou vzdialenostou
-	$result = dibi::query('SELECT name FROM face_recognition.person WHERE idperson=%i', $persons_id[0] );
+	$result2 = dibi::query('SELECT name FROM face_recognition.person WHERE idperson=%i', $persons_id[0] );
 
     $menoRozpoznanejOsoby=array();
     
-      foreach ($result as $n => $row){
+      foreach ($result2 as $n => $row){
          array_push($menoRozpoznanejOsoby, $row['name']);
       }
 	  
