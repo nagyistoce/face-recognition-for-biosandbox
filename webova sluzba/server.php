@@ -171,12 +171,22 @@ function udfRecognitionTest2($xmlfile){
 	  }
 	
 	$result->free();
+	unset($result);
+	dibi::disconnect();
+	dibi::connect(array(
+      'driver'   => 'mysql',
+      'host'     => $dbserver,
+      'username' => $dbusername,
+      'password' => $dbpassword,
+      'database' => $dbid,
+      'charset'  => 'utf8',
+    )); 
 	//selectne meno osoby , ktora vlastni vector s minimalnou vzdialenostou
-	$result2 = dibi::query('SELECT name FROM face_recognition.person WHERE idperson=%i', $persons_id[0] );
+	$result = dibi::query('SELECT name FROM face_recognition.person WHERE idperson=%i', $persons_id[0] );
 
     $menoRozpoznanejOsoby=array();
     
-      foreach ($result2 as $n => $row){
+      foreach ($result as $n => $row){
          array_push($menoRozpoznanejOsoby, $row['name']);
       }
 	  
