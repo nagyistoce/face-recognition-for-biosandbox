@@ -166,12 +166,12 @@ function udfRecognitionTest2($xmlfile){
 	  }
 	
 	  //porovnanie s minimalnou vzdialenostou a osetrenie, ci nenastala chyba
-	  if($podobnost[0]>$maxDistance || $podobnost[0]==-1){
+	  if(($podobnost[0]>$maxDistance) || ($podobnost[0]==-1)){
 		return "Nenasla sa zhoda!";
 	  }
 	
 	//selectne meno osoby , ktora vlastni vector s minimalnou vzdialenostou
-	$result = dibi::query('SELECT name FROM person WHERE idperson=%i', $persons_id[0]);
+	$result = dibi::query('SELECT name FROM person WHERE idperson=%i', 80 /*$persons_id[0]*/ );
 
     $menoRozpoznanejOsoby=array();
     
