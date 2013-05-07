@@ -171,7 +171,7 @@ function udfRecognitionTest2($xmlfile){
 	  }
 	
 	//selectne meno osoby , ktora vlastni vector s minimalnou vzdialenostou
-	$result = dibi::query('SELECT name FROM person WHERE idperson=%i', 80 /*$persons_id[0]*/ );
+	$result = dibi::query('SELECT name FROM person WHERE idperson=%i', /*80*/ $persons_id[0] );
 
     $menoRozpoznanejOsoby=array();
     
