@@ -31,5 +31,12 @@ namespace FaceRecognitionClient
         {
             return string.Format("[{0}]Error: {1}\n", DateTime.Now, message);
         }
+
+        public static string CleanVectorString(string vector)
+        {
+            string tmp = vector.Replace("\n", "");
+            tmp = tmp.Replace("\r", "");
+            return tmp;
+        }
     }
 }
