@@ -14,8 +14,8 @@
         <GroupBox Header="Porovnanie testovacieho vektoru s trénovacími vzorkami" Height="80" HorizontalAlignment="Left" Margin="10,128,0,0" Name="groupBox2" VerticalAlignment="Top" Width="477">
             <Grid>
                 <Button Content="Porovnanie osoby" Height="23" HorizontalAlignment="Left" Margin="6,6,0,0" Name="button2" VerticalAlignment="Top" Width="117" Click="button2_Click" />
-                <RadioButton Content="pomocou UDF" Height="16" HorizontalAlignment="Left" Margin="174,6,0,0" Name="radioButton1" VerticalAlignment="Top" IsChecked="True" />
-                <RadioButton Content="bez použitia UDF" Height="16" HorizontalAlignment="Left" Margin="174,26,0,0" Name="radioButton2" VerticalAlignment="Top" />
+                <RadioButton Visibility="Hidden" Content="pomocou UDF" Height="16" HorizontalAlignment="Left" Margin="174,6,0,0" Name="radioButton1" VerticalAlignment="Top" IsChecked="True" />
+                <RadioButton Visibility="Hidden" Content="bez použitia UDF" Height="16" HorizontalAlignment="Left" Margin="174,26,0,0" Name="radioButton2" VerticalAlignment="Top" />
             </Grid>
         </GroupBox>
         <GroupBox Header="Odpoveď zo servera" HorizontalAlignment="Left" Margin="10,275,0,12" Name="groupBox3" Width="477">
