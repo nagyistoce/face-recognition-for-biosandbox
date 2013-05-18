@@ -100,7 +100,9 @@ namespace FaceRecognitionClient
 
             if (textBox2.Text.Length < 1)
             {
-                textBox1.Text += Tools.GetLogMessage("Pred trenovanim je potrebne zadat meno osoby.");
+                textBox1.Text += Tools.GetErrorMessage("Pred trenovanim je potrebne zadat meno osoby.");
+                EndAsyncOperation();
+                return;
             }
 
             _train = new TrainingWindow();

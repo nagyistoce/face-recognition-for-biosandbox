@@ -145,7 +145,7 @@ namespace FaceRecognitionClient
             for (int i = 0; i < vectorsCount; i++)
             {
                 XmlNode vector = xmlVectors.GetElementsByTagName(string.Format("features_{0}", i)).Item(0);
-                string personVector = vector.LastChild.InnerText;
+                string personVector = Tools.CleanVectorString(vector.LastChild.InnerText);
 
                 // pridanie vektoru
                 XmlNode requestData = requestDatas.AppendChild(request.CreateElement("Data"));
