@@ -22,7 +22,7 @@ namespace FaceRecognitionClient
     {
         private MainWindow _parent;
         private BackgroundWorkerControl _bc;
-
+        private bool _isUdfFca1Enabled;
 
         public TestingWindow()
         {
@@ -32,9 +32,10 @@ namespace FaceRecognitionClient
             this.Left = SystemParameters.PrimaryScreenWidth - this.Width - 10;
         }
 
-        public void Show(MainWindow parent, string personName)
+        public void Show(MainWindow parent, bool isUdfFca1Enabled)
         {
             _parent = parent;
+            _isUdfFca1Enabled = isUdfFca1Enabled;
             this.Show();
         }
 
@@ -79,7 +80,7 @@ namespace FaceRecognitionClient
                 if (e.Result.ToString().StartsWith("Upload"))
                 {
                     _parent.textBox1.Text += Tools.GetLogMessage("Start sending content to server");
-                    _bc.AsyncTestUpload();
+                    _bc.AsyncTestUpload(_isUdfFca1Enabled);
                 }
             }
         }
@@ -94,7 +95,7 @@ namespace FaceRecognitionClient
         {
             this.button2.IsEnabled = false;
             _parent.textBox1.Text += Tools.GetLogMessage("Start sending content to server");
-            _bc.AsyncTestUpload();
+            _bc.AsyncTestUpload(_isUdfFca1Enabled);
         }
 
         // cancel

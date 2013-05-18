@@ -19,6 +19,7 @@ namespace FaceRecognitionClient.Threading
 
         private Trening _trening = null;       // automaticke trenovanie vektorov
         private Test _test = null;             // automaticke testovanie vektorov
+        private bool _isUdfFca1Checked;
 
         private TextBox _textbox;
 
@@ -226,13 +227,15 @@ namespace FaceRecognitionClient.Threading
         {
             BackgroundWorker worker = sender as BackgroundWorker;
 
-            e.Result = _test.DoUpload();
+            e.Result = _test.DoUpload(_isUdfFca1Checked);
         }
 
-        public void AsyncTestUpload()
+        public void AsyncTestUpload(bool IsUdfFca1Checked)
         {
             _worker.DoWork -= new DoWorkEventHandler(TestDoWork);
             _worker.DoWork += new DoWorkEventHandler(TestUploadDoWork);
+
+            _isUdfFca1Checked = IsUdfFca1Checked;
             
             _worker.RunWorkerAsync();
         }

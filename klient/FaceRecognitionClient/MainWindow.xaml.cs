@@ -64,7 +64,7 @@ namespace FaceRecognitionClient
             StartAsyncOperation();
 
             _test = new TestingWindow();
-            _test.Show(this, textBox2.Text);
+            _test.Show(this, (this.radioButton1.IsChecked == true));
         }
 
 //         private void BackgroundWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

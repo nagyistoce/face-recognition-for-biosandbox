@@ -66,7 +66,7 @@ namespace FaceRecognitionClient
             return "Start test";
         }
 
-        public string DoUpload()
+        public string DoUpload(bool isUdfFca1Checked)
         {
             if (_tmpSavePath.Length < 1)
                 return "ERROR: Temporary save path does not exist.";
@@ -98,10 +98,10 @@ namespace FaceRecognitionClient
                 Thread.Sleep(250);
             }
 
-            return "Upload " + FeaturesUploadRequest();
+            return "Upload " + FeaturesUploadRequest(isUdfFca1Checked);
         }
 
-        private string FeaturesUploadRequest()
+        private string FeaturesUploadRequest(bool isUdfFca1Checked)
         {
             int vectorsCount;
             // nacitanie vektorov
@@ -133,7 +133,10 @@ namespace FaceRecognitionClient
 
             ServiceReference3.recognitionwsdlPortType client = new ServiceReference3.recognitionwsdlPortTypeClient();
             //_textBox.Text += Tools.GetLogMessage("Start sending content to server"); 
-            return client.udfRecognitionTest2("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
+            if (isUdfFca1Checked)
+                return client.udfRecognitionTest("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
+            else
+                return client.udfRecognitionTest2("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
         }
 
         private void CreateTrainXml(out string tmpTrainXml, out string tmpDbXml)
