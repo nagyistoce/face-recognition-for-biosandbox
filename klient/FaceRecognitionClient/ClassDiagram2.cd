@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FaceRecognitionClient.App" Collapsed="true">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>App.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.MainWindow">
+    <Position X="10.75" Y="3.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAgAABAAACAAAAAAAAAABDAAAAAAAAA=</HashCode>
+      <FileName>MainWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.Test">
+    <Position X="12.75" Y="2.25" Width="2" />
+    <NestedTypes>
+      <Struct Name="FaceRecognitionClient.Test.SFile" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Test.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>RABAAIAAgKAgAAAAAAABAAAAEFAAAIAAAAEAgAAwAAA=</HashCode>
+      <FileName>Test.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.TestingWindow">
+    <Position X="5.75" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAIAgQAAAEABCAEGAAAAAAAAA=</HashCode>
+      <FileName>TestingWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.Tools">
+    <Position X="10.5" Y="0.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAQAAAAAAUA=</HashCode>
+      <FileName>Tools.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.TrainingWindow">
+    <Position X="8.25" Y="3.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAABAgAAAAABAAIAgQAAAEABCAAEAAABAAAAE=</HashCode>
+      <FileName>TrainingWindow.xaml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.Trening">
+    <Position X="15.25" Y="2.25" Width="2" />
+    <NestedTypes>
+      <Struct Name="FaceRecognitionClient.Trening.SFile" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Trening.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>RABAAIAggKAgAAAAAAABAAgAEFAAAIKAAAEAAAAwAAA=</HashCode>
+      <FileName>Trening.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.Properties.Resources" Collapsed="true">
+    <Position X="6" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.Properties.Settings" Collapsed="true">
+    <Position X="7.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceRecognitionClient.ServiceReference2.uploadwsdlPortTypeClient" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="6" Width="3" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference2\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FaceRecognitionClient.ServiceReference3.recognitionwsdlPortTypeClient" BaseTypeListCollapsed="true">
+    <Position X="1.5" Y="3.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAA=</HashCode>
+      <FileName>Service References\ServiceReference3\Reference.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FaceRecognitionClient.Threading.BackgroundWorkerControl" Collapsed="true">
+    <Position X="7.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQEAgAAwAAAJAACEAEAAEAAGEQQAAAYBAABAAiwgAA=</HashCode>
+      <FileName>Threading\BackgroundWorkerControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="FaceRecognitionClient.ServiceReference2.uploadwsdlPortType">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference2\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FaceRecognitionClient.ServiceReference2.uploadwsdlPortTypeChannel" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference2\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FaceRecognitionClient.ServiceReference3.recognitionwsdlPortType">
+    <Position X="0.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAA=</HashCode>
+      <FileName>Service References\ServiceReference3\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="FaceRecognitionClient.ServiceReference3.recognitionwsdlPortTypeChannel" Collapsed="true">
+    <Position X="1" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Service References\ServiceReference3\Reference.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Delegate Name="FaceRecognitionClient.Threading.DBackgroundWorkerCallback" Collapsed="true">
+    <Position X="7.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Threading\BackgroundWorkerControl.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
