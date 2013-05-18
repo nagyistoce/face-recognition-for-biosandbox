@@ -50,7 +50,7 @@ namespace FaceRecognitionClient
             _dispatcherTimer = new DispatcherTimer();
             _dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             _dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
-            label2.Content = 0;
+            label2.Content = string.Format("{0}", 0);
             
             //_dispatcherTimer.Start();
             
@@ -76,15 +76,15 @@ namespace FaceRecognitionClient
                 _times[2] = DateTime.Now;
 
             if (i < 7)
-                label1.Content = "Pozeraj sa rovno";
+                label1.Text = "Pozeraj sa rovno";
             else if (i < 11)
-                label1.Content = "Natoč sa doľava";
+                label1.Text = "Natoč sa doľava";
             else if (i < 15)
-                label1.Content = "Natoč sa doprava";
+                label1.Text = "Natoč sa doprava";
             else
             {
                 this.EndBiosandboxProc();
-                label1.Content = "Snímky sa odosielajú do databázy";
+                label1.Text = "Snímky sa odosielajú do databázy";
                 _bc.AsyncTreningUpload(_times, _personName);
             }
         }

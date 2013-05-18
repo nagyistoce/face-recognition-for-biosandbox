@@ -133,7 +133,7 @@ namespace FaceRecognitionClient
 
             ServiceReference3.recognitionwsdlPortType client = new ServiceReference3.recognitionwsdlPortTypeClient();
             //_textBox.Text += Tools.GetLogMessage("Start sending content to server"); 
-            return client.udfRecognitionTest("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
+            return client.udfRecognitionTest2("<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + requestString);
         }
 
         private void CreateTrainXml(out string tmpTrainXml, out string tmpDbXml)
