@@ -81,7 +81,7 @@
       <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Service References\ServiceReference2\Reference.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FaceRecognitionClient.ServiceReference3.recognitionwsdlPortTypeClient" BaseTypeListCollapsed="true">
     <Position X="1.5" Y="3.75" Width="3.25" />
@@ -89,7 +89,7 @@
       <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEABAA=</HashCode>
       <FileName>Service References\ServiceReference3\Reference.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" Collapsed="true" />
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="FaceRecognitionClient.Threading.BackgroundWorkerControl" Collapsed="true">
     <Position X="7.75" Y="0.5" Width="1.5" />
