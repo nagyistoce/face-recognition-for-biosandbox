@@ -151,7 +151,7 @@ function udfRecognitionTest2($xmlfile){
     $vectorData= $vector->nodeValue;
 	
 	//vnoreny foreach - pre vsetky vektory v databaze a pre vsetky vectory v xml testuj vzdialenost
-	  $result = dibi::query('call face_recognition.FindPerson(%s)', $vectorData);
+	  $result = dibi::query('call face_recognition.FindPersonUDF(%s)', $vectorData);
 
 	  $persons_id = array();
       $podobnost = array();
