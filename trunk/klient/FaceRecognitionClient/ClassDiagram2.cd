@@ -36,7 +36,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FaceRecognitionClient.Tools">
-    <Position X="10.5" Y="0.75" Width="1.75" />
+    <Position X="9.75" Y="0.5" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAQAQAAAAAAUA=</HashCode>
       <FileName>Tools.cs</FileName>
@@ -70,7 +70,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FaceRecognitionClient.Properties.Settings" Collapsed="true">
-    <Position X="7.75" Y="1.5" Width="1.5" />
+    <Position X="7.75" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAAAAAAAAAAAA=</HashCode>
     </TypeIdentifier>
@@ -91,22 +91,22 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="FaceRecognitionClient.Threading.BackgroundWorkerControl" Collapsed="true">
-    <Position X="7.75" Y="0.5" Width="1.5" />
+  <Class Name="FaceRecognitionClient.Threading.BackgroundWorkerControl">
+    <Position X="18" Y="2" Width="2.5" />
     <TypeIdentifier>
       <HashCode>AgQEAgAAwAAAJAACEAEAAEAAGEQQAAAYBAABAAiwgAA=</HashCode>
       <FileName>Threading\BackgroundWorkerControl.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Interface Name="FaceRecognitionClient.ServiceReference2.uploadwsdlPortType">
-    <Position X="3.5" Y="0.5" Width="1.5" />
+    <Position X="3.5" Y="0.5" Width="2" />
     <TypeIdentifier>
       <HashCode>gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Service References\ServiceReference2\Reference.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="FaceRecognitionClient.ServiceReference2.uploadwsdlPortTypeChannel" Collapsed="true">
-    <Position X="3.5" Y="2.5" Width="1.5" />
+    <Position X="3.75" Y="2.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Service References\ServiceReference2\Reference.cs</FileName>
@@ -127,7 +127,7 @@
     </TypeIdentifier>
   </Interface>
   <Delegate Name="FaceRecognitionClient.Threading.DBackgroundWorkerCallback" Collapsed="true">
-    <Position X="7.25" Y="2.75" Width="1.5" />
+    <Position X="18" Y="1" Width="2.25" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAgAAAAAAAA=</HashCode>
       <FileName>Threading\BackgroundWorkerControl.cs</FileName>
